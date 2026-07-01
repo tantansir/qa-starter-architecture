@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="520" viewBox="0 0 1120 520" role="img" aria-label="QA starter architecture diagram">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#333"/>
+    </marker>
+    <style>
+      .box { fill:#fff; stroke:#333; stroke-width:2; rx:12; }
+      .future { fill:#f8f8f8; stroke:#777; stroke-width:2; stroke-dasharray:8 6; rx:12; }
+      .label { font-family: Arial, Helvetica, sans-serif; font-size:18px; font-weight:700; fill:#222; }
+      .small { font-family: Arial, Helvetica, sans-serif; font-size:14px; fill:#333; }
+      .line { stroke:#333; stroke-width:2.2; marker-end:url(#arrow); fill:none; }
+      .dashline { stroke:#777; stroke-width:2.2; stroke-dasharray:8 6; marker-end:url(#arrow); fill:none; }
+    </style>
+  </defs>
+
+  <text x="35" y="45" class="label" style="font-size:24px">QA Starter Architecture</text>
+
+  <rect x="35" y="90" width="210" height="105" class="box"/>
+  <text x="60" y="125" class="label">Developer</text>
+  <text x="60" y="150" class="small">Devcontainer, tests,</text>
+  <text x="60" y="170" class="small">local HTTP server</text>
+
+  <rect x="35" y="300" width="210" height="105" class="box"/>
+  <text x="60" y="335" class="label">GitHub repo</text>
+  <text x="60" y="360" class="small">Code, docs, diagram,</text>
+  <text x="60" y="380" class="small">provenance log</text>
+
+  <rect x="330" y="90" width="220" height="105" class="box"/>
+  <text x="355" y="125" class="label">Lambda URL</text>
+  <text x="355" y="150" class="small">HTTPS endpoint</text>
+  <text x="355" y="170" class="small">POST /ask</text>
+
+  <rect x="635" y="90" width="220" height="105" class="box"/>
+  <text x="660" y="125" class="label">Lambda function</text>
+  <text x="660" y="150" class="small">Validate request and</text>
+  <text x="660" y="170" class="small">call core logic</text>
+
+  <rect x="635" y="300" width="220" height="105" class="box"/>
+  <text x="660" y="335" class="label">CloudWatch Logs</text>
+  <text x="660" y="360" class="small">Runtime logs and</text>
+  <text x="660" y="380" class="small">debugging evidence</text>
+
+  <rect x="925" y="90" width="160" height="105" class="box"/>
+  <text x="950" y="125" class="label">Stub adapter</text>
+  <text x="950" y="150" class="small">Deterministic</text>
+  <text x="950" y="170" class="small">answer payload</text>
+
+  <rect x="925" y="300" width="160" height="105" class="future"/>
+  <text x="950" y="335" class="label">Future LLM</text>
+  <text x="950" y="360" class="small">Bedrock or other</text>
+  <text x="950" y="380" class="small">approved provider</text>
+
+  <path d="M245 142 L330 142" class="line"/>
+  <path d="M550 142 L635 142" class="line"/>
+  <path d="M855 142 L925 142" class="line"/>
+  <path d="M745 195 L745 300" class="line"/>
+  <path d="M1005 195 L1005 300" class="dashline"/>
+  <path d="M140 195 L140 300" class="line"/>
+
+  <text x="270" y="132" class="small">HTTPS</text>
+  <text x="565" y="132" class="small">invoke</text>
+  <text x="870" y="132" class="small">call</text>
+  <text x="760" y="250" class="small">logs</text>
+  <text x="1018" y="250" class="small">later replace</text>
+  <text x="55" y="250" class="small">commit/push</text>
+</svg>
