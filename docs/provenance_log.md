@@ -1,6 +1,6 @@
 # Code Provenance Log
 
-This log records how the starter architecture was produced and reviewed. Update it whenever the repository changes.
+This log records how the starter architecture was produced and reviewed. It should be updated whenever the repository changes.
 
 | Area | Human-written / agent-generated | Review performed |
 |---|---|---|
@@ -16,9 +16,11 @@ This log records how the starter architecture was produced and reviewed. Update 
 
 ## AI use mode
 
-The AI assistant was used in Operator/Agent mode to generate a first-pass repository and in Critic mode to check whether the result matched the assignment. The human reviewer remains responsible for understanding, testing, and explaining the submitted code.
+The AI assistant was used in Operator/Agent mode to generate a first-pass repository and in Critic mode to check whether the result matched the assignment.
 
-## Human reviewer
+The human reviewers remain responsible for understanding, testing, and explaining the submitted code. Code that the team cannot explain should not be treated as controlled project code.
 
-Name/team: Kaizhen Tan, Yixiao Li, Hanzhe Hong, Yiying Lu
+## Human reviewers
+
+Name/team: Kaizhen Tan, Yixiao Li, Hanzhe Hong, Yiying Lu  
 Date reviewed: 2026-07-02
