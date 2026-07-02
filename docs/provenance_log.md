@@ -20,5 +20,5 @@ The AI assistant was used in Operator/Agent mode to generate a first-pass reposi
 
 ## Human reviewer
 
-Name/team: TODO: replace with your name or team name before submission.
-Date reviewed: TODO.
+Name/team: Kaizhen Tan, Yixiao Li, Hanzhe Hong, Yiying Lu
+Date reviewed: 2026-07-02
