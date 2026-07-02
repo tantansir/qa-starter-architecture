@@ -52,7 +52,7 @@ The current test suite covers:
 - question normalization and validation in the core logic;
 - stub response shape and mode;
 - direct Lambda invoke events;
-- Lambda Function URL-style events;
+- Lambda Function URL-style success, health, bad JSON, missing question, and wrong-path behavior;
 - local HTTP `/health`, `/ask`, bad JSON, missing question, and wrong-path behavior.
 
 Run all tests with:
@@ -63,7 +63,7 @@ make test
 
 ## AWS Academy Learner Lab deployment
 
-The Learner Lab is restricted to `us-east-1`, so the deployment script defaults to that region.
+The Learner Lab is restricted to `us-east-1`, so the deployment script defaults to that region. Deployment commands require active AWS Academy Learner Lab credentials and AWS CLI access; local and devcontainer prototype commands do not require AWS access.
 
 ```bash
 make deploy
