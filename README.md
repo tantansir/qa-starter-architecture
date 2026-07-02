@@ -42,7 +42,6 @@ Expected result: JSON containing the original question, a stubbed answer, the mo
 The Learner Lab is restricted to `us-east-1`, so the deployment script defaults to that region.
 
 ```bash
-aws configure set region us-east-1
 make deploy
 ```
 
