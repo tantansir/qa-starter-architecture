@@ -11,15 +11,8 @@ if ! aws sts get-caller-identity --region "$REGION" >/dev/null 2>&1; then
   exit 1
 fi
 
-ROLE_ARN="${LAMBDA_ROLE_ARN:-}"
-if [[ -z "$ROLE_ARN" ]]; then
-  ROLE_ARN="$(aws iam get-role --role-name LabRole --query 'Role.Arn' --output text --region "$REGION" 2>/dev/null || true)"
-fi
-
-if [[ -z "$ROLE_ARN" || "$ROLE_ARN" == "None" ]]; then
-  echo "Could not find the Academy LabRole. Set LAMBDA_ROLE_ARN manually and rerun." >&2
-  exit 1
-fi
+ACCOUNT_ID="$(aws sts get-caller-identity --query Account --output text --region "$REGION")"
+ROLE_ARN="${LAMBDA_ROLE_ARN:-arn:aws:iam::${ACCOUNT_ID}:role/LabRole}"
 
 echo "Using region: $REGION"
 echo "Using role: $ROLE_ARN"
@@ -61,38 +54,65 @@ else
   aws lambda wait function-active --function-name "$FUNCTION_NAME" --region "$REGION"
 fi
 
-if ! aws lambda get-function-url-config --function-name "$FUNCTION_NAME" --region "$REGION" >/dev/null 2>&1; then
-  echo "Creating Lambda Function URL"
-  aws lambda create-function-url-config \
-    --function-name "$FUNCTION_NAME" \
-    --auth-type NONE \
-    --region "$REGION" >/dev/null
-fi
-
-PERMISSION_OUTPUT="$(mktemp)"
-if ! aws lambda add-permission \
-  --function-name "$FUNCTION_NAME" \
-  --statement-id FunctionURLAllowPublicAccess \
-  --action lambda:InvokeFunctionUrl \
-  --principal "*" \
-  --function-url-auth-type NONE \
-  --region "$REGION" >"$PERMISSION_OUTPUT" 2>&1; then
-  if grep -q "ResourceConflictException" "$PERMISSION_OUTPUT"; then
-    echo "Invoke permission already exists."
+FUNCTION_URL=""
+if aws lambda get-function-url-config --function-name "$FUNCTION_NAME" --region "$REGION" >/tmp/qa_function_url_check.json 2>/tmp/qa_function_url_check.err; then
+  FUNCTION_URL="$(python3 - <<'PY'
+import json
+with open('/tmp/qa_function_url_check.json') as f:
+    data = json.load(f)
+print(data.get('FunctionUrl', ''))
+PY
+)"
+else
+  if aws lambda create-function-url-config --function-name "$FUNCTION_NAME" --auth-type NONE --region "$REGION" >/dev/null 2>/tmp/qa_function_url_create.err; then
+    FUNCTION_URL="$(aws lambda get-function-url-config --function-name "$FUNCTION_NAME" --region "$REGION" --query FunctionUrl --output text 2>/dev/null || true)"
   else
-    cat "$PERMISSION_OUTPUT" >&2
-    rm -f "$PERMISSION_OUTPUT"
-    exit 1
+    echo "Function URL could not be created in this sandbox. Continuing with direct Lambda invoke fallback."
   fi
 fi
-rm -f "$PERMISSION_OUTPUT"
 
-FUNCTION_URL="$(aws lambda get-function-url-config --function-name "$FUNCTION_NAME" --region "$REGION" --query FunctionUrl --output text)"
+if [[ -n "$FUNCTION_URL" && "$FUNCTION_URL" != "None" ]]; then
+  if ! aws lambda add-permission \
+    --function-name "$FUNCTION_NAME" \
+    --statement-id FunctionURLAllowPublicAccess \
+    --action lambda:InvokeFunctionUrl \
+    --principal "*" \
+    --function-url-auth-type NONE \
+    --region "$REGION" >/tmp/qa_lambda_permission.out 2>/tmp/qa_lambda_permission.err; then
+    if grep -q "ResourceConflictException" /tmp/qa_lambda_permission.err; then
+      echo "Function URL invoke permission already exists."
+    else
+      echo "Function URL permission could not be added; direct Lambda invoke still works."
+      FUNCTION_URL=""
+    fi
+  fi
+fi
+
+cat > build/payload.json <<'JSON'
+{"question":"What does this service do?"}
+JSON
+
+aws lambda invoke \
+  --function-name "$FUNCTION_NAME" \
+  --payload fileb://build/payload.json \
+  build/lambda_response.json \
+  --region "$REGION" >/dev/null
 
 echo
 echo "Deployment complete."
-echo "Function URL: ${FUNCTION_URL}"
+echo "Lambda function: ${FUNCTION_NAME}"
+echo "Direct invoke response:"
+cat build/lambda_response.json
 echo
-echo "Test command:"
-echo "curl -s -X POST '${FUNCTION_URL}ask' -H 'content-type: application/json' -d '{\"question\":\"What does this service do?\"}' && echo"
-echo
+
+if [[ -n "$FUNCTION_URL" && "$FUNCTION_URL" != "None" ]]; then
+  echo "Function URL: ${FUNCTION_URL}"
+  echo
+  echo "Function URL test command:"
+  echo "curl -s -X POST '${FUNCTION_URL}ask' -H 'content-type: application/json' -d '{\"question\":\"What does this service do?\"}' && echo"
+else
+  echo "No Function URL is active. This is acceptable for the sandbox fallback path."
+  echo
+  echo "Direct invoke test command:"
+  echo "aws lambda invoke --function-name '${FUNCTION_NAME}' --payload fileb://build/payload.json build/lambda_response.json --region '${REGION}' >/dev/null && cat build/lambda_response.json && echo"
+fi

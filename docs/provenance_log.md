@@ -7,7 +7,7 @@ This log records how the starter architecture was produced and reviewed. Update 
 | Repository structure | Agent-generated initial structure, reviewed by human | Human checked that the structure matches the assignment: devcontainer, source, tests, docs, scripts, and infra notes. |
 | Core QA logic | Agent-generated draft | Human reviewed the input validation, maximum question length, deterministic stub response, and ability to explain each function. |
 | Local HTTP server | Agent-generated draft | Human reviewed the `/ask` contract and tested the local request path. |
-| Lambda adapter | Agent-generated draft | Human reviewed the mapping from Lambda Function URL events to the same core logic and tested it in the Academy sandbox. |
+| Lambda adapter | Agent-generated draft | Human reviewed the mapping from Lambda Function URL events and direct Lambda invoke events to the same core logic. |
 | Deployment script | Agent-generated draft | Human reviewed that it uses `us-east-1`, uses the existing Academy `LabRole`, and creates/updates only the Lambda prototype. |
 | Architecture diagram | Agent-generated draft | Human reviewed that every labeled component is either implemented now or clearly marked as future. |
 | Architecture narrative | Agent-generated draft | Human reviewed cloud-service claims against what was actually deployed. |

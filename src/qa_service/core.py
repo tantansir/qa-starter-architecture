@@ -5,11 +5,9 @@ The transport layers call generate_answer(question) and can later swap the stub 
 an approved model integration.
 """
 
-from __future__ import annotations
-
 from datetime import datetime, timezone
 import re
-from typing import Any
+from typing import Any, Dict
 
 MAX_QUESTION_CHARS = 2000
 MODEL_NAME = "stubbed-llm-v0"
@@ -24,11 +22,11 @@ def normalize_question(question: Any) -> str:
     if not cleaned:
         raise ValueError("question is required")
     if len(cleaned) > MAX_QUESTION_CHARS:
-        raise ValueError(f"question must be {MAX_QUESTION_CHARS} characters or fewer")
+        raise ValueError("question must be {} characters or fewer".format(MAX_QUESTION_CHARS))
     return cleaned
 
 
-def generate_answer(question: Any) -> dict[str, str]:
+def generate_answer(question: Any) -> Dict[str, str]:
     """Return the current prototype answer payload.
 
     The answer is intentionally deterministic. In the next iteration, only this

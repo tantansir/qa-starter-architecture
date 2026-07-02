@@ -1,7 +1,5 @@
 """Minimal local HTTP server for the QA starter prototype."""
 
-from __future__ import annotations
-
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 import os
@@ -13,7 +11,7 @@ from qa_service.core import generate_answer
 class QARequestHandler(BaseHTTPRequestHandler):
     server_version = "qa-starter/0.1"
 
-    def _json_response(self, status_code: int, payload: dict) -> None:
+    def _json_response(self, status_code, payload):
         body = json.dumps(payload, indent=2).encode("utf-8")
         self.send_response(status_code)
         self.send_header("content-type", "application/json")
@@ -21,14 +19,14 @@ class QARequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
-    def do_GET(self) -> None:
+    def do_GET(self):
         path = urlparse(self.path).path
         if path in {"/", "/health"}:
             self._json_response(200, {"status": "ok", "service": "qa-starter"})
             return
         self._json_response(404, {"error": "not found"})
 
-    def do_POST(self) -> None:
+    def do_POST(self):
         path = urlparse(self.path).path.rstrip("/")
         if path != "/ask":
             self._json_response(404, {"error": "not found"})
@@ -45,14 +43,14 @@ class QARequestHandler(BaseHTTPRequestHandler):
 
         self._json_response(200, response_body)
 
-    def log_message(self, format: str, *args) -> None:
+    def log_message(self, format, *args):
         print("local_server:", format % args)
 
 
-def main() -> None:
+def main():
     port = int(os.environ.get("PORT", "8000"))
     server = HTTPServer(("0.0.0.0", port), QARequestHandler)
-    print(f"QA starter service listening on http://0.0.0.0:{port}")
+    print("QA starter service listening on http://0.0.0.0:{}".format(port))
     server.serve_forever()
 
 
