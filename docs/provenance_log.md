@@ -25,17 +25,21 @@ For this project, human review means a teammate can explain the relevant code pa
 | 2026-07-02 | `tests/test_local_server.py` | Agent-generated follow-up change, reviewed by human | Critic, Operator/Agent | Human ran `make test` and confirmed local HTTP `/health`, `/ask`, bad JSON, missing question, and wrong-path cases pass. |
 | 2026-07-02 | `README.md` and architecture narrative hardening updates | Agent-generated follow-up documentation change, reviewed by human | Critic, Operator/Agent | Human confirmed the run instructions, test coverage summary, API contract, and security limitations match the repository behavior. |
 | 2026-07-02 | `tests/test_lambda_app.py`, `README.md`, `docs/provenance_log.md` final polish | Agent-generated follow-up change for final critique fixes | Critic, Operator/Agent | Added Lambda adapter error-path tests, clarified AWS deployment prerequisites, and removed stale submission-readiness notes from this log. The named team reviewers own final validation of this small diff before submission. |
+| 2026-07-02 | `docs/ai_use_modes_alignment.md` | Agent-generated AI-use compliance documentation, reviewed by human | Critic, Operator/Agent | Added explicit mapping to the course AI Use Modes guide, condensed prompt/action history, verification notes, and human contribution statement. Team should confirm the record accurately describes the process before submission. |
 
 ## AI use mode
 
 The AI assistant was used in Operator/Agent mode to generate a first-pass repository and in Critic mode to check whether the result matched the assignment. The 2026-07-02 follow-up hardening and final-polish changes were also agent-generated after critique of the original submission. The human reviewers remain responsible for understanding, testing, and explaining the submitted code.
+
+See `docs/ai_use_modes_alignment.md` for the explicit Operator/Agent and Critic mapping, condensed prompt/action history, verification notes, and human contribution record.
 
 ## Team review checklist
 
 1. Run `make test` from a clean clone or devcontainer.
 2. Run `make run`, then send the README curl request to `POST /ask`.
 3. Confirm `docs/lab_build_evidence.md` still reflects the latest sandbox deployment evidence, or rerun `make deploy` and `make evidence` if the sandbox was reset.
-4. Confirm the final-polish diff is understood by at least one named teammate.
+4. Review `docs/ai_use_modes_alignment.md` and confirm that the mode mapping and prompt/action history are accurate.
+5. Confirm the final-polish diff is understood by at least one named teammate.
 
 ## Human reviewer
 
