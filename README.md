@@ -4,7 +4,7 @@ This repository is a working starter architecture for a question-answering proto
 
 The current implementation accepts a user question and returns a deterministic stubbed answer. The generation boundary is intentionally isolated so a future model provider, such as Amazon Bedrock or another approved LLM service, can replace the stub without changing the public API contract.
 
-This version is compatible with the older Python 3.6 interpreter commonly present in the Learner Lab terminal. The devcontainer and GitHub CI can still run newer Python versions.
+This version is compatible with the older Python 3.6 interpreter commonly present in the Learner Lab terminal. The devcontainer and GitHub CI run Python 3.11.
 
 ## Repository structure
 
@@ -12,11 +12,19 @@ This version is compatible with the older Python 3.6 interpreter commonly presen
 .devcontainer/             Reproducible development environment definition
 .github/workflows/         Continuous integration checks for GitHub
 src/qa_service/            Application code
-tests/                     Unit tests
+tests/                     Unit and local integration tests
 docs/                      Architecture diagram, narrative, provenance, lab evidence
 scripts/                   Deployment and evidence capture scripts
 infra/                     Notes for future infrastructure-as-code work
 ```
+
+## Development environment
+
+The repository is designed so a new teammate can clone it and run the prototype without installing third-party Python packages.
+
+Use the devcontainer through VS Code, GitHub Codespaces, or another compatible Dev Containers client. The container uses Python 3.11, forwards port `8000`, sets `PYTHONPATH` for the `src/` layout, and runs the test suite after creation.
+
+For a non-container local environment, use the `make` commands below. They set `PYTHONPATH=src` explicitly so the package can be imported without installing it.
 
 ## Local run
 
@@ -36,6 +44,22 @@ curl -s -X POST http://localhost:8000/ask \
 ```
 
 Expected result: JSON containing the original question, a stubbed answer, the model adapter name, and a timestamp.
+
+## Test coverage
+
+The current test suite covers:
+
+- question normalization and validation in the core logic;
+- stub response shape and mode;
+- direct Lambda invoke events;
+- Lambda Function URL-style events;
+- local HTTP `/health`, `/ask`, bad JSON, missing question, and wrong-path behavior.
+
+Run all tests with:
+
+```bash
+make test
+```
 
 ## AWS Academy Learner Lab deployment
 
