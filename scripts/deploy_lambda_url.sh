@@ -38,7 +38,7 @@ if aws lambda get-function --function-name "$FUNCTION_NAME" --region "$REGION" >
     --function-name "$FUNCTION_NAME" \
     --zip-file fileb://build/function.zip \
     --region "$REGION" >/dev/null
-  aws lambda wait function-updated --function-name "$FUNCTION_NAME" --region "$REGION"
+  sleep 10
 else
   echo "Creating Lambda function: $FUNCTION_NAME"
   aws lambda create-function \
@@ -47,11 +47,10 @@ else
     --handler qa_service.lambda_app.handler \
     --role "$ROLE_ARN" \
     --zip-file fileb://build/function.zip \
-    --architectures x86_64 \
     --timeout 15 \
     --memory-size 128 \
     --region "$REGION" >/dev/null
-  aws lambda wait function-active --function-name "$FUNCTION_NAME" --region "$REGION"
+  sleep 10
 fi
 
 FUNCTION_URL=""
