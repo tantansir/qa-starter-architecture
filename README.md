@@ -1,8 +1,8 @@
 # QA Starter Architecture
 
-This repository is a working starter architecture for a question-answering prototype built in the AWS Academy Learner Lab sandbox and saved to GitHub.
+This repository is a working starter architecture for a university services navigator: an AI-enabled question-answering service that can later answer routine student questions about deadlines, course logistics, registration, campus resources, and university office policies. It is built in the AWS Academy Learner Lab sandbox and saved to GitHub.
 
-The current implementation accepts a user question and returns a deterministic stubbed answer. The generation boundary is intentionally isolated so a future model provider, such as Amazon Bedrock or another approved LLM service, can replace the stub without changing the public API contract.
+The current implementation accepts a user question and returns a deterministic stubbed answer. It does not yet claim to solve institutional advising. The generation boundary is intentionally isolated so a future model provider, such as Amazon Bedrock or another approved LLM service, can replace the stub without changing the public API contract.
 
 This version is compatible with the older Python 3.6 interpreter commonly present in the Learner Lab terminal. The devcontainer and GitHub CI run Python 3.11.
 
