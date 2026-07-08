@@ -1,6 +1,6 @@
 # Code Provenance Log
 
-Last updated: 2026-07-02
+Last updated: 2026-07-08
 
 This log records how the starter architecture was produced and reviewed. Update it whenever the repository changes. Code that is agent-generated must be reviewed by a human teammate before final submission.
 
@@ -26,10 +26,11 @@ For this project, human review means a teammate can explain the relevant code pa
 | 2026-07-02 | `README.md` and architecture narrative hardening updates | Agent-generated follow-up documentation change, reviewed by human | Critic, Operator/Agent | Human confirmed the run instructions, test coverage summary, API contract, and security limitations match the repository behavior. |
 | 2026-07-02 | `tests/test_lambda_app.py`, `README.md`, `docs/provenance_log.md` final polish | Agent-generated follow-up change for final critique fixes | Critic, Operator/Agent | Added Lambda adapter error-path tests, clarified AWS deployment prerequisites, and removed stale submission-readiness notes from this log. The named team reviewers own final validation of this small diff before submission. |
 | 2026-07-02 | `docs/ai_use_modes_alignment.md` | Agent-generated AI-use compliance documentation, reviewed by human | Critic, Operator/Agent | Added explicit mapping to the course AI Use Modes guide, condensed prompt/action history, verification notes, and human contribution statement. Team should confirm the record accurately describes the process before submission. |
+| 2026-07-08 | `README.md`, `docs/architecture_narrative.md`, `docs/provenance_log.md` university-services framing update | Agent-generated follow-up documentation change, requested by human | Critic, Operator/Agent | Added clearer framing that the starter architecture is for a university services navigator using a CMU-like baseline environment. Human should confirm that the wording matches the intended course submission scope. |
 
 ## AI use mode
 
-The AI assistant was used in Operator/Agent mode to generate a first-pass repository and in Critic mode to check whether the result matched the assignment. The 2026-07-02 follow-up hardening and final-polish changes were also agent-generated after critique of the original submission. The human reviewers remain responsible for understanding, testing, and explaining the submitted code.
+The AI assistant was used in Operator/Agent mode to generate a first-pass repository and in Critic mode to check whether the result matched the assignment. The 2026-07-02 follow-up hardening and final-polish changes were also agent-generated after critique of the original submission. The 2026-07-08 documentation update was agent-generated after a critique that the project should be anchored more explicitly to the university-services use case. The human reviewers remain responsible for understanding, testing, and explaining the submitted code.
 
 See `docs/ai_use_modes_alignment.md` for the explicit Operator/Agent and Critic mapping, condensed prompt/action history, verification notes, and human contribution record.
 
